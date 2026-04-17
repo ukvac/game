@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVEE OX GAME</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f13;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: 12px;
+    color: #fff;
+    opacity: 0.9;
+  }
+
+  /* Mode selector */
+  .mode-selector {
+    display: flex;
+    background: #1a1a22;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+  }
+  .mode-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: #555;
+  }
+  .mode-btn.active {
+    background: #fff;
+    color: #0f0f13;
+  }
+
+  /* Score bar */
+  .scorebar {
+    display: flex;
+    gap: 0;
+    width: 320px;
+  }
+  .score-card {
+    flex: 1;
+    text-align: center;
+    padding: 14px 10px;
+    border-radius: 0;
+    position: relative;
+  }
+  .score-card:first-child { border-radius: 14px 0 0 14px; }
+  .score-card:last-child  { border-radius: 0 14px 14px 0; }
+  .score-card.x-card { background: #1c1028; }
+  .score-card.draw-card { background: #161616; }
+  .score-card.o-card { background: #0d1f22; }
+  .score-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; opacity: 0.5; margin-bottom: 4px; }
+  .score-label.x { color: #c084fc; }
+  .score-label.o { color: #34d399; }
+  .score-label.d { color: #6b7280; }
+  .score-num { font-size: 1.6rem; font-weight: 700; }
+  .score-num.x { color: #c084fc; }
+  .score-num.o { color: #34d399; }
+  .score-num.d { color: #4b5563; }
+
+  /* Turn indicator */
+  .turn-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #555;
+    height: 28px;
+    transition: all 0.3s;
+  }
+  .turn-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 320px;
+    height: 320px;
+  }
+
+  .cell {
+    background: #1a1a22;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cell:hover:not(.taken) { background: #22222e; transform: scale(1.03); }
+  .cell.taken { cursor: default; }
+  .cell.win-cell { background: #1e1e2e; }
+  .cell.win-cell.x-win { background: #1e112e; }
+  .cell.win-cell.o-win { background: #0d2220; }
+
+  /* SVG symbols */
+  .cell svg { width: 56px; height: 56px; opacity: 0; transition: opacity 0.2s; }
+  .cell.taken svg { opacity: 1; }
+
+  /* X lines */
+  .x-line {
+    stroke: #c084fc;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+    animation: drawLine 0.25s ease forwards;
+  }
+  /* O circle */
+  .o-circle {
+    stroke: #34d399;
+    stroke-width: 6;
+    stroke-linecap: round;
+    fill: none;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: drawCircle 0.3s ease forwards;
+  }
+
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes drawCircle {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Win line overlay */
+  .win-line-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 320px; height: 320px;
+    pointer-events: none;
+  }
+  .win-stroke {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawWin 0.4s ease forwards 0.1s;
+    stroke-linecap: round;
+  }
+  @keyframes drawWin {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .grid-wrap { position: relative; width: 320px; height: 320px; }
+
+  /* Status */
+  .status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #555;
+    height: 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  /* Reset */
+  .reset-btn {
+    background: #1a1a22;
+    border: none;
+    color: #777;
+    padding: 12px 36px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: #22222e; color: #aaa; }
+</style>
+</head>
+<body>
+
+<div class="title">AVEE OX</div>
+
+<div class="mode-selector">
+  <button class="mode-btn active" onclick="setMode('pvp')">2 PLAYERS</button>
+  <button class="mode-btn" onclick="setMode('ai')">VS AI</button>
+</div>
+
+<div class="scorebar">
+  <div class="score-card x-card">
+    <div class="score-label x" id="x-label">X</div>
+    <div class="score-num x" id="score-x">0</div>
+  </div>
+  <div class="score-card draw-card">
+    <div class="score-label d">DRAW</div>
+    <div class="score-num d" id="score-d">0</div>
+  </div>
+  <div class="score-card o-card">
+    <div class="score-label o" id="o-label">O</div>
+    <div class="score-num o" id="score-o">0</div>
+  </div>
+</div>
+
+<div class="turn-indicator" id="turn-ind">
+  <div class="turn-dot" id="turn-dot"></div>
+  <span id="turn-text">X'S TURN</span>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+  <svg class="win-line-svg" id="win-svg"></svg>
+</div>
+
+<div class="status" id="status"></div>
+<button class="reset-btn" onclick="resetGame()">NEW GAME</button>
+
+<script>
+let board = Array(9).fill(null);
+let current = 'X';
+let gameOver = false;
+let mode = 'pvp'; // 'pvp' or 'ai'
+let scores = {X:0, O:0, D:0};
+let aiThinking = false;
+
+const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('x-label').textContent = 'X';
+  document.getElementById('o-label').textContent = mode === 'ai' ? 'AI' : 'O';
+  resetGame();
+}
+
+function buildGrid() {
+  const g = document.getElementById('grid');
+  g.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.i = i;
+    cell.addEventListener('click', () => handleClick(i));
+    g.appendChild(cell);
+  }
+}
+
+function handleClick(i) {
+  if (gameOver || board[i] || aiThinking) return;
+  if (mode === 'ai' && current === 'O') return;
+  place(i, current);
+  const w = getWinner();
+  if (!w && board.includes(null)) {
+    current = current === 'X' ? 'O' : 'X';
+    updateTurn();
+    if (mode === 'ai' && current === 'O') doAI();
+  }
+}
+
+function place(i, player) {
+  board[i] = player;
+  const cell = document.querySelector(`.cell[data-i="${i}"]`);
+  cell.classList.add('taken');
+  cell.innerHTML = player === 'X' ? svgX() : svgO();
+  checkEnd();
+}
+
+function svgX() {
+  return `<svg viewBox="0 0 80 80">
+    <line class="x-line" x1="18" y1="18" x2="62" y2="62"/>
+    <line class="x-line" x1="62" y1="18" x2="18" y2="62" style="animation-delay:0.05s"/>
+  </svg>`;
+}
+function svgO() {
+  return `<svg viewBox="0 0 80 80">
+    <circle class="o-circle" cx="40" cy="40" r="24"/>
+  </svg>`;
+}
+
+function getWinner() {
+  for (const [a,b,c] of WINS) {
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) return {player: board[a], line:[a,b,c]};
+  }
+  return null;
+}
+
+function checkEnd() {
+  const w = getWinner();
+  if (w) {
+    gameOver = true;
+    scores[w.player]++;
+    updateScores();
+    highlightWin(w);
+    const label = mode === 'ai' && w.player === 'O' ? 'AI WINS' : `${w.player} WINS`;
+    document.getElementById('status').textContent = label;
+    document.getElementById('status').style.color = w.player === 'X' ? '#c084fc' : '#34d399';
+    document.getElementById('turn-ind').style.opacity = '0';
+    return true;
+  }
+  if (!board.includes(null)) {
+    gameOver = true;
+    scores.D++;
+    updateScores();
+    document.getElementById('status').textContent = 'DRAW';
+    document.getElementById('status').style.color = '#4b5563';
+    document.getElementById('turn-ind').style.opacity = '0';
+    return true;
+  }
+  return false;
+}
+
+function highlightWin({player, line}) {
+  line.forEach(i => {
+    const cell = document.querySelector(`.cell[data-i="${i}"]`);
+    cell.classList.add('win-cell', player === 'X' ? 'x-win' : 'o-win');
+  });
+  // Draw win line
+  const positions = line.map(i => {
+    const col = i % 3, row = Math.floor(i / 3);
+    const gap = 10, cs = (320 - gap*2) / 3;
+    return { x: col*(cs+gap) + cs/2, y: row*(cs+gap) + cs/2 };
+  });
+  const svg = document.getElementById('win-svg');
+  const color = player === 'X' ? '#c084fc' : '#34d399';
+  svg.innerHTML = `<line class="win-stroke" x1="${positions[0].x}" y1="${positions[0].y}" x2="${positions[2].x}" y2="${positions[2].y}" stroke="${color}" stroke-width="5" opacity="0.5"/>`;
+}
+
+function updateTurn() {
+  if (gameOver) return;
+  const dot = document.getElementById('turn-dot');
+  const txt = document.getElementById('turn-text');
+  const isX = current === 'X';
+  dot.style.background = isX ? '#c084fc' : '#34d399';
+  const label = mode === 'ai' && !isX ? 'AI THINKING…' : `${current}'S TURN`;
+  txt.textContent = label;
+  txt.style.color = isX ? '#c084fc' : '#34d399';
+}
+
+function updateScores() {
+  document.getElementById('score-x').textContent = scores.X;
+  document.getElementById('score-o').textContent = scores.O;
+  document.getElementById('score-d').textContent = scores.D;
+}
+
+// AI — minimax
+function doAI() {
+  aiThinking = true;
+  updateTurn();
+  setTimeout(() => {
+    const best = minimax(board, 'O', 0);
+    place(best.idx, 'O');
+    const w = getWinner();
+    if (!w && board.includes(null)) {
+      current = 'X';
+      updateTurn();
+    }
+    aiThinking = false;
+  }, 380);
+}
+
+function minimax(b, player, depth) {
+  const w = checkBoard(b);
+  if (w === 'O') return {score: 10 - depth};
+  if (w === 'X') return {score: depth - 10};
+  if (!b.includes(null)) return {score: 0};
+  const moves = [];
+  for (let i = 0; i < 9; i++) {
+    if (b[i]) continue;
+    const nb = [...b]; nb[i] = player;
+    const result = minimax(nb, player === 'O' ? 'X' : 'O', depth + 1);
+    moves.push({idx: i, score: result.score});
+  }
+  moves.sort((a,b) => player === 'O' ? b.score - a.score : a.score - b.score);
+  return moves[0];
+}
+
+function checkBoard(b) {
+  for (const [a,bb,c] of WINS) {
+    if (b[a] && b[a] === b[bb] && b[bb] === b[c]) return b[a];
+  }
+  return null;
+}
+
+function resetGame() {
+  board = Array(9).fill(null);
+  current = 'X';
+  gameOver = false;
+  aiThinking = false;
+  document.getElementById('status').textContent = '';
+  document.getElementById('win-svg').innerHTML = '';
+  document.getElementById('turn-ind').style.opacity = '1';
+  buildGrid();
+  updateTurn();
+}
+
+buildGrid();
+updateTurn();
+</script>
+</body>
+</html>
