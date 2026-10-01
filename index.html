@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brick & Olive · Inventory & expenses</title>
+  <meta name="description" content="Brick & Olive inventory, purchasing, expenses and daily reports.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
+  <script defer src="./vendor/xlsx.full.min.js"></script><script defer src="./core.js"></script><script defer src="./github.js"></script><script defer src="./app.js"></script>
+</head>
+<body>
+<section id="login" class="login">
+  <div class="login-brand"><div class="wordmark">brick <span>&</span> olive<span class="brand-dot">.</span></div><p>THE EVERYDAY WORKBOOK</p><h1>A little more order.<br>A clearer picture.</h1><div class="login-caption">Inventory, purchases & expenses<br>Shop and home, all in one place.</div></div>
+  <div class="login-side"><form id="login-form" class="login-card"><span class="eyebrow">BRICK & OLIVE</span><h2>Welcome back.</h2><p>Sign in to your workbook.</p><label>Username<input name="username" autocomplete="username" required autofocus></label><label>Password<div class="password-wrap"><input name="password" type="password" autocomplete="current-password" required><button type="button" id="show-password" class="text-button">Show</button></div></label><p id="login-error" class="error" role="alert"></p><button class="primary full" type="submit">Open workbook</button><p class="small muted">Public site · This login is a convenience lock, not secure authentication. Initial workbook records are public.</p></form></div>
+</section>
+<div id="app" hidden>
+  <header class="topbar"><a href="#dashboard" class="wordmark">brick <span>&</span> olive<span class="brand-dot">.</span></a><span class="app-label">INVENTORY & EXPENSES</span><div class="top-actions"><span id="save-status" role="status">Loading records…</span><button data-action="sync" class="primary">Save to GitHub</button><button data-action="refresh">Refresh</button><button data-action="logout" class="text-button">Log out</button></div></header>
+  <nav id="nav" aria-label="Workbook sheets"></nav>
+  <main id="main"></main>
+  <footer><span>Brick & Olive workbook</span><span>GitHub repository storage · Local draft recovery</span><button data-action="data" class="text-button">Data & setup</button></footer>
+</div>
+<dialog id="modal"><div id="modal-content"></div></dialog>
+<div id="toast" role="status" hidden></div>
+<input id="import-file" type="file" accept=".xlsx,.json" hidden>
+<noscript>This workbook needs JavaScript enabled in your browser.</noscript>
+</body></html>
