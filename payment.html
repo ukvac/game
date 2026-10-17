@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local demonstration checkout. No payment information is transmitted.">
+  <title>Payment details</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="checkout-page">
+  <header class="checkout-header">
+    <div class="checkout-header-inner">
+      <div class="brand-link">
+        <img src="assets/branding/checkout-logo.svg" alt="Payline demo checkout" class="checkout-logo">
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-shell">
+    <div id="checkout-view">
+      <section class="panel order-panel" aria-labelledby="order-heading">
+        <button class="panel-heading order-toggle" type="button" aria-expanded="true" aria-controls="order-content">
+          <span class="chevron" aria-hidden="true"></span>
+          <span id="order-heading">Order summary</span>
+        </button>
+        <div id="order-content" class="order-content">
+          <dl class="order-list">
+            <div><dt>Payment reference:</dt><dd>DEMO-2026-004219</dd></div>
+            <div><dt>Description:</dt><dd>Project application fee</dd></div>
+            <div><dt>Amount (GBP):</dt><dd class="order-amount">£36.50</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="panel payment-panel" aria-labelledby="payment-heading">
+        <div class="payment-title-row">
+          <div>
+            <h2 id="payment-heading">Payment details</h2>
+            <p><span class="required-dot" aria-hidden="true">*</span> Indicates a required field</p>
+          </div>
+          <div class="payment-header-tools">
+            <div class="accepted-cards" aria-label="Accepted payment methods">
+              <img class="accepted-card-logo" src="assets/payment-brands/american-express.svg" alt="American Express">
+              <img class="accepted-card-logo" src="assets/payment-brands/mastercard-full.svg" alt="Mastercard">
+              <img class="accepted-card-logo" src="assets/payment-brands/visa.svg" alt="Visa">
+              <img class="accepted-card-logo" src="assets/payment-brands/maestro-full.svg" alt="Maestro">
+              <img class="accepted-card-logo" src="assets/payment-brands/google-pay.svg" alt="Google Pay">
+            </div>
+            <button class="mini-back-button" type="button" data-history-back><span aria-hidden="true">↶</span> Back</button>
+          </div>
+        </div>
+
+        <form id="payment-form" novalidate>
+          <div class="form-grid">
+            <div class="field field-wide">
+              <label for="card-number">Card number <span aria-hidden="true">*</span></label>
+              <input id="card-number" name="card-number" type="text" inputmode="numeric" autocomplete="off" maxlength="23" placeholder="0000 0000 0000 0000" required aria-describedby="card-number-error">
+              <p class="field-error" id="card-number-error"></p>
+            </div>
+            <div class="field field-wide">
+              <label for="cardholder">Cardholder's name <span aria-hidden="true">*</span></label>
+              <input id="cardholder" name="cardholder" type="text" autocomplete="off" placeholder="First Name" required aria-describedby="cardholder-error">
+              <p class="field-error" id="cardholder-error"></p>
+            </div>
+            <div class="field">
+              <label for="expiry">Expiry date <span aria-hidden="true">*</span></label>
+              <input id="expiry" name="expiry" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/YY" required aria-describedby="expiry-error">
+              <p class="field-error" id="expiry-error"></p>
+            </div>
+            <div class="field">
+              <label for="security-code">Security code <span aria-hidden="true">*</span></label>
+              <div class="security-code-row">
+                <input id="security-code" name="security-code" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="000" required aria-describedby="security-code-error security-help">
+                <span class="cvv-icon" aria-hidden="true"></span>
+                <span id="security-help">3 or 4 digits</span>
+              </div>
+              <p class="field-error" id="security-code-error"></p>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="secondary-button" type="button" data-history-back>Cancel payment</button>
+            <button class="primary-button" type="submit" id="pay-button">Make payment</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <section id="result-view" class="result-card" hidden aria-live="polite"></section>
+  </main>
+
+  <footer class="checkout-footer">
+    <div class="checkout-footer-row">
+      <span>Demo environment · No payment data is stored or transmitted</span>
+      <div class="atht-text-control" role="radiogroup" aria-label="ATHT payment result">
+        <span class="atht-name">ATHT</span>
+        <input class="atht-radio" type="radio" name="demo-result" id="atht-on" value="success" checked>
+        <label for="atht-on" title="Successful result">1</label>
+        <span aria-hidden="true">/</span>
+        <input class="atht-radio" type="radio" name="demo-result" id="atht-off" value="declined">
+        <label for="atht-off" title="Declined result">2</label>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/checkout.js?v=5"></script>
+</body>
+</html>

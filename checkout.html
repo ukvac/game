@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Choose a payment method for the local demonstration checkout.">
+  <title>Select payment method</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="checkout-page selection-page">
+  <header class="checkout-header">
+    <div class="checkout-header-inner">
+      <div class="brand-link">
+        <img src="assets/branding/checkout-logo.svg" alt="Payline demo checkout" class="checkout-logo">
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-shell selection-shell">
+    <section class="panel selection-order-panel" aria-labelledby="selection-order-heading">
+      <div class="selection-heading-row">
+        <h1 id="selection-order-heading">Order summary</h1>
+        <label class="language-select">
+          <span class="sr-only">Language</span>
+          <select aria-label="Language">
+            <option selected>English</option>
+          </select>
+        </label>
+      </div>
+      <dl class="order-list selection-order-list">
+        <div><dt>Payment reference:</dt><dd>DEMO-2026-004219</dd></div>
+        <div><dt>Description:</dt><dd>Project application fee</dd></div>
+        <div><dt>Amount (GBP):</dt><dd class="order-amount">£36.50</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel selection-panel" aria-labelledby="express-heading">
+      <h2 id="express-heading">Express Checkout</h2>
+      <a class="gpay-express-button" href="payment.html" aria-label="Continue with Google Pay">
+        <span>Buy with</span>
+        <img src="assets/payment-brands/google-pay-dark.svg" alt="Google Pay">
+      </a>
+    </section>
+
+    <section class="panel selection-panel" aria-labelledby="methods-heading">
+      <h2 id="methods-heading">Select payment method</h2>
+      <div class="payment-option-list">
+        <a class="payment-option-row" href="payment.html">
+          <span class="payment-option-icon" aria-hidden="true">
+            <span></span>
+          </span>
+          <span class="payment-option-name">Credit/Debit Cards</span>
+          <span class="payment-option-logos" aria-label="Visa, Mastercard, Maestro and American Express">
+            <img src="assets/payment-brands/visa.svg" alt="Visa">
+            <img src="assets/payment-brands/mastercard-full.svg" alt="Mastercard">
+            <img src="assets/payment-brands/maestro-full.svg" alt="Maestro">
+            <img src="assets/payment-brands/american-express.svg" alt="American Express">
+          </span>
+          <span class="payment-option-arrow" aria-hidden="true">›</span>
+        </a>
+        <div class="payment-option-row payment-option-row-static" aria-disabled="true">
+          <span class="brand-tile unionpay-tile" aria-hidden="true"><span>UnionPay</span></span>
+          <span class="payment-option-name">China Union Pay</span>
+        </div>
+        <div class="payment-option-row payment-option-row-static" aria-disabled="true">
+          <span class="brand-tile wechat-tile" aria-hidden="true"><span></span></span>
+          <span class="payment-option-name">WeChat Pay</span>
+        </div>
+        <div class="payment-option-row payment-option-row-static" aria-disabled="true">
+          <span class="brand-tile paypal-tile" aria-hidden="true"><strong>P</strong><span>PayPal</span></span>
+          <span class="payment-option-name">PayPal</span>
+        </div>
+        <div class="payment-option-row payment-option-row-static" aria-disabled="true">
+          <span class="brand-tile alipay-tile" aria-hidden="true"><strong>支</strong><span>ALIPAY</span></span>
+          <span class="payment-option-name">Alipay</span>
+        </div>
+        <div class="payment-option-row payment-option-row-static" aria-disabled="true">
+          <span class="brand-tile alipay-tile" aria-hidden="true"><strong>支</strong><span>ALIPAY</span></span>
+          <span class="payment-option-name">Alipay Mobile</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="checkout-footer">
+    <div class="checkout-footer-row">
+      <span>Demo environment · No payment data is stored or transmitted</span>
+    </div>
+  </footer>
+</body>
+</html>
