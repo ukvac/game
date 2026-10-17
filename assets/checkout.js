@@ -3,15 +3,34 @@
 
   const form = document.getElementById("payment-form");
   const checkoutView = document.getElementById("checkout-view");
+  const processingView = document.getElementById("processing-view");
   const resultView = document.getElementById("result-view");
   const orderToggle = document.querySelector(".order-toggle");
   const orderContent = document.getElementById("order-content");
   const cardNumber = document.getElementById("card-number");
   const expiry = document.getElementById("expiry");
   const securityCode = document.getElementById("security-code");
+  const paymentReference = document.getElementById("payment-reference").textContent.trim();
+  const paymentDescription = document.getElementById("payment-description").textContent.trim();
+  const processingDelays = {
+    success: 7000,
+    unsuccessful: 45000
+  };
 
   function digitsOnly(value) {
     return value.replace(/\D/g, "");
+  }
+
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, function (character) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[character];
+    });
   }
 
   document.addEventListener("click", function (event) {
@@ -82,22 +101,20 @@
 
   function showResult(result) {
     const successful = result === "success";
-    resultView.className = "result-card" + (successful ? "" : " declined");
+    resultView.className = "result-card" + (successful ? "" : " unsuccessful");
     resultView.innerHTML =
       '<div class="result-icon" aria-hidden="true">' + (successful ? "✓" : "×") + "</div>" +
-      "<h1>Payment " + (successful ? "successful" : "declined") + "</h1>" +
+      "<h1>Payment " + (successful ? "successful" : "unsuccessful") + "</h1>" +
       "<p>" +
         (successful
           ? "The demonstration journey has completed successfully."
           : "The demonstration payment was not approved. No charge has been made.") +
       "</p>" +
       '<dl class="result-summary">' +
-        "<div><dt>Reference</dt><dd>DEMO-2026-004219</dd></div>" +
-        "<div><dt>Description</dt><dd>Project application fee</dd></div>" +
-        "<div><dt>Amount</dt><dd>£36.50</dd></div>" +
-        "<div><dt>Status</dt><dd>" + (successful ? "Successful" : "Declined") + "</dd></div>" +
+        "<div><dt>Reference</dt><dd>" + escapeHtml(paymentReference) + "</dd></div>" +
+        "<div><dt>Description</dt><dd>" + escapeHtml(paymentDescription) + "</dd></div>" +
+        "<div><dt>Status</dt><dd>" + (successful ? "Successful" : "Unsuccessful") + "</dd></div>" +
       "</dl>" +
-      '<div class="result-notice">Demonstration result — not a payment receipt</div>' +
       '<div class="result-actions">' +
         (successful
           ? '<button class="primary-button" type="button" data-history-back>Return</button>'
@@ -105,6 +122,7 @@
       "</div>";
 
     checkoutView.hidden = true;
+    processingView.hidden = true;
     resultView.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
     resultView.querySelector("h1").setAttribute("tabindex", "-1");
@@ -120,6 +138,24 @@
     }
   }
 
+  function setCheckoutControlsDisabled(disabled) {
+    checkoutView.querySelectorAll("button, input").forEach(function (control) {
+      control.disabled = disabled;
+    });
+
+    document.querySelectorAll('.atht-radio').forEach(function (control) {
+      control.disabled = disabled;
+    });
+  }
+
+  function showProcessing() {
+    setCheckoutControlsDisabled(true);
+    checkoutView.hidden = true;
+    resultView.hidden = true;
+    processingView.hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     if (!validate()) {
@@ -129,6 +165,12 @@
     }
 
     const selectedResult = document.querySelector('input[name="demo-result"]:checked');
-    showResult(selectedResult && selectedResult.value === "declined" ? "declined" : "success");
+    const result = selectedResult && selectedResult.value === "success" ? "success" : "unsuccessful";
+
+    showProcessing();
+    window.setTimeout(function () {
+      setCheckoutControlsDisabled(false);
+      showResult(result);
+    }, processingDelays[result]);
   });
 })();

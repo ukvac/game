@@ -25,8 +25,8 @@
         </button>
         <div id="order-content" class="order-content">
           <dl class="order-list">
-            <div><dt>Payment reference:</dt><dd>DEMO-2026-004219</dd></div>
-            <div><dt>Description:</dt><dd>Project application fee</dd></div>
+            <div><dt>Payment reference:</dt><dd id="payment-reference">DEMO-2026-004219</dd></div>
+            <div><dt>Description:</dt><dd id="payment-description">Project application fee</dd></div>
             <div><dt>Amount (GBP):</dt><dd class="order-amount">£36.50</dd></div>
           </dl>
         </div>
@@ -86,23 +86,29 @@
       </section>
     </div>
 
+    <section id="processing-view" class="processing-card" hidden role="status" aria-live="polite" aria-atomic="true">
+      <div class="processing-spinner" aria-hidden="true"></div>
+      <h1>Processing payment</h1>
+      <p>Please wait while your payment is being processed.</p>
+    </section>
+
     <section id="result-view" class="result-card" hidden aria-live="polite"></section>
   </main>
 
   <footer class="checkout-footer">
     <div class="checkout-footer-row">
-      <span>Payment Page </span>
+      <span>Demo environment · No payment data is stored or transmitted</span>
       <div class="atht-text-control" role="radiogroup" aria-label="ATHT payment result">
         <span class="atht-name">ATHT</span>
         <input class="atht-radio" type="radio" name="demo-result" id="atht-on" value="success" checked>
         <label for="atht-on" title="Successful result">1</label>
         <span aria-hidden="true">/</span>
-        <input class="atht-radio" type="radio" name="demo-result" id="atht-off" value="declined">
-        <label for="atht-off" title="Declined result">2</label>
+        <input class="atht-radio" type="radio" name="demo-result" id="atht-unsuccessful" value="unsuccessful">
+        <label for="atht-unsuccessful" title="Payment unsuccessful result">2</label>
       </div>
     </div>
   </footer>
 
-  <script src="assets/checkout.js?v=5"></script>
+  <script src="assets/checkout.js?v=7"></script>
 </body>
 </html>
