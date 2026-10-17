@@ -10,8 +10,23 @@
   const cardNumber = document.getElementById("card-number");
   const expiry = document.getElementById("expiry");
   const securityCode = document.getElementById("security-code");
-  const paymentReference = document.getElementById("payment-reference").textContent.trim();
-  const paymentDescription = document.getElementById("payment-description").textContent.trim();
+  const paymentReferenceElement = document.getElementById("payment-reference");
+  const paymentDescriptionElement = document.getElementById("payment-description");
+  const paymentAmountElement = document.getElementById("payment-amount");
+  const orderParameters = new URLSearchParams(window.location.search);
+
+  function orderValue(name, fallback) {
+    const value = orderParameters.get(name);
+    return value && value.trim() ? value.trim() : fallback;
+  }
+
+  const paymentReference = orderValue("reference", paymentReferenceElement.textContent.trim());
+  const paymentDescription = orderValue("description", paymentDescriptionElement.textContent.trim());
+  const paymentAmount = orderValue("amount", paymentAmountElement.textContent.trim());
+
+  paymentReferenceElement.textContent = paymentReference;
+  paymentDescriptionElement.textContent = paymentDescription;
+  paymentAmountElement.textContent = paymentAmount;
   const processingDelays = {
     success: 7000,
     unsuccessful: 45000

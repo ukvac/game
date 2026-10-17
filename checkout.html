@@ -28,15 +28,15 @@
         </label>
       </div>
       <dl class="order-list selection-order-list">
-        <div><dt>Payment reference:</dt><dd>DEMO-2026-004219</dd></div>
-        <div><dt>Description:</dt><dd>Project application fee</dd></div>
-        <div><dt>Amount (GBP):</dt><dd class="order-amount">£36.50</dd></div>
+        <div><dt>Payment reference:</dt><dd id="selection-reference">DEMO-2026-004219</dd></div>
+        <div><dt>Description:</dt><dd id="selection-description">Project application fee</dd></div>
+        <div><dt>Amount (GBP):</dt><dd id="selection-amount" class="order-amount">£36.50</dd></div>
       </dl>
     </section>
 
     <section class="panel selection-panel" aria-labelledby="express-heading">
       <h2 id="express-heading">Express Checkout</h2>
-      <a class="gpay-express-button" href="payment.html" aria-label="Continue with Google Pay">
+      <a class="gpay-express-button" href="payment.html" data-payment-link aria-label="Continue with Google Pay">
         <span>Buy with</span>
         <img src="assets/payment-brands/google-pay-dark.svg" alt="Google Pay">
       </a>
@@ -45,7 +45,7 @@
     <section class="panel selection-panel" aria-labelledby="methods-heading">
       <h2 id="methods-heading">Select payment method</h2>
       <div class="payment-option-list">
-        <a class="payment-option-row" href="payment.html">
+        <a class="payment-option-row" href="payment.html" data-payment-link>
           <span class="payment-option-icon" aria-hidden="true">
             <span></span>
           </span>
@@ -84,8 +84,10 @@
 
   <footer class="checkout-footer">
     <div class="checkout-footer-row">
-      <span>No payment data is stored or transmitted to third parties.</span>
+      <span>Demo environment · No payment data is stored or transmitted</span>
     </div>
   </footer>
+
+  <script src="assets/selection.js?v=1"></script>
 </body>
 </html>
