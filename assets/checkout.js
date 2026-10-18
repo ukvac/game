@@ -52,9 +52,9 @@
   }
 
   document.addEventListener("click", function (event) {
-    const originControl = event.target.closest("[data-return-origin]");
-    if (originControl) {
-      window.history.go(-2);
+    const closeControl = event.target.closest("[data-close-window]");
+    if (closeControl) {
+      window.close();
       return;
     }
 
@@ -149,7 +149,7 @@
             "<div><dt>Fee paid</dt><dd>" + escapeHtml(paymentAmount) + "</dd></div>" +
           "</dl>" +
           '<div class="result-actions">' +
-            '<button class="primary-button" type="button" data-return-origin>Continue</button>' +
+            '<button class="primary-button" type="button" data-close-window>Continue</button>' +
           "</div>" +
         "</div>";
     } else {
@@ -183,7 +183,7 @@
             "</section>" +
             '<div class="result-actions">' +
               '<button class="secondary-button" type="button" id="try-again">Try again</button>' +
-              '<button class="primary-button" type="button" data-return-origin>Continue</button>' +
+              '<button class="primary-button" type="button" data-close-window>Continue</button>' +
             "</div>" +
           "</div>" +
         "</div>";
