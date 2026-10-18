@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Local demonstration checkout. No payment information is transmitted.">
   <title>Payment details</title>
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/styles.css?v=11">
 </head>
 <body class="checkout-page">
   <header class="checkout-header">
@@ -97,7 +97,7 @@
 
   <footer class="checkout-footer">
     <div class="checkout-footer-row">
-      <span>No payment data is stored or transmitted</span>
+      <span id="checkout-footer-note">Demo environment · No payment data is stored or transmitted</span>
       <div class="atht-text-control" role="radiogroup" aria-label="ATHT payment result">
         <span class="atht-name">ATHT</span>
         <input class="atht-radio" type="radio" name="demo-result" id="atht-on" value="success" checked>
@@ -109,6 +109,6 @@
     </div>
   </footer>
 
-  <script src="assets/checkout.js?v=8"></script>
+  <script src="assets/checkout.js?v=15"></script>
 </body>
 </html>

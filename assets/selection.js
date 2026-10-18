@@ -4,7 +4,8 @@
   const order = {
     reference: document.getElementById("selection-reference").textContent.trim(),
     description: document.getElementById("selection-description").textContent.trim(),
-    amount: document.getElementById("selection-amount").textContent.trim()
+    amount: document.getElementById("selection-amount").textContent.trim(),
+    footer: document.getElementById("selection-footer-note").textContent.trim()
   };
 
   document.querySelectorAll("[data-payment-link]").forEach(function (link) {

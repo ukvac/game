@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Choose a payment method for the local demonstration checkout.">
   <title>Select payment method</title>
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/styles.css?v=11">
 </head>
 <body class="checkout-page selection-page">
   <header class="checkout-header">
@@ -28,9 +28,9 @@
         </label>
       </div>
       <dl class="order-list selection-order-list">
-        <div><dt>Payment reference:</dt><dd id="selection-reference">UKVI-2026-00055500004219</dd></div>
-        <div><dt>Description:</dt><dd id="selection-description">Frank Lee</dd></div>
-        <div><dt>Amount (GBP):</dt><dd id="selection-amount" class="order-amount">£379.00</dd></div>
+        <div><dt>Payment reference:</dt><dd id="selection-reference">DEMO-2026-004219</dd></div>
+        <div><dt>Description:</dt><dd id="selection-description">Project application fee</dd></div>
+        <div><dt>Amount (GBP):</dt><dd id="selection-amount" class="order-amount">£36.50</dd></div>
       </dl>
     </section>
 
@@ -84,10 +84,10 @@
 
   <footer class="checkout-footer">
     <div class="checkout-footer-row">
-      <span>No payment data is stored or transmitted to third parties.</span>
+      <span id="selection-footer-note">Demo environment · No payment data is stored or transmitted</span>
     </div>
   </footer>
 
-  <script src="assets/selection.js?v=1"></script>
+  <script src="assets/selection.js?v=3"></script>
 </body>
 </html>
