@@ -122,8 +122,8 @@
       "<h1>Payment " + (successful ? "successful" : "unsuccessful") + "</h1>" +
       "<p>" +
         (successful
-          ? "The demonstration journey has completed successfully."
-          : "The demonstration payment was not approved. No charge has been made.") +
+          ? "Your payment has been successful. Please wait for the next page to load."
+          : "There has been a problem with your payment. Select your payment type again and re-enter your details to proceed.") +
       "</p>" +
       '<dl class="result-summary">' +
         "<div><dt>Reference</dt><dd>" + escapeHtml(paymentReference) + "</dd></div>" +
