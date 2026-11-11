@@ -34,6 +34,8 @@
     success: 7000,
     unsuccessful: 45000
   };
+  let processingTimer = null;
+  let processingInProgress = false;
 
   function digitsOnly(value) {
     return value.replace(/\D/g, "");
@@ -126,6 +128,9 @@
   function showResult(result) {
     const successful = result === "success";
     const cardholderName = document.getElementById("cardholder").value.trim();
+    processingInProgress = false;
+    processingTimer = null;
+    document.body.classList.remove("payment-processing");
     document.body.classList.toggle("showing-failure", !successful);
     resultView.className = "result-card" + (successful ? " successful" : " unsuccessful");
     if (successful) {
@@ -211,19 +216,38 @@
     checkoutView.querySelectorAll("button, input").forEach(function (control) {
       control.disabled = disabled;
     });
-
-    document.querySelectorAll('.atht-radio').forEach(function (control) {
-      control.disabled = disabled;
-    });
   }
 
   function showProcessing() {
+    processingInProgress = true;
+    document.body.classList.add("payment-processing");
     setCheckoutControlsDisabled(true);
     checkoutView.hidden = true;
     resultView.hidden = true;
     processingView.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  function selectedProcessingResult() {
+    const selectedResult = document.querySelector('input[name="demo-result"]:checked');
+    return selectedResult && selectedResult.value === "success" ? "success" : "unsuccessful";
+  }
+
+  function scheduleProcessingResult() {
+    const result = selectedProcessingResult();
+    if (processingTimer !== null) window.clearTimeout(processingTimer);
+
+    processingTimer = window.setTimeout(function () {
+      setCheckoutControlsDisabled(false);
+      showResult(result);
+    }, processingDelays[result]);
+  }
+
+  document.querySelectorAll('.atht-radio').forEach(function (control) {
+    control.addEventListener("change", function () {
+      if (processingInProgress) scheduleProcessingResult();
+    });
+  });
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -233,13 +257,7 @@
       return;
     }
 
-    const selectedResult = document.querySelector('input[name="demo-result"]:checked');
-    const result = selectedResult && selectedResult.value === "success" ? "success" : "unsuccessful";
-
     showProcessing();
-    window.setTimeout(function () {
-      setCheckoutControlsDisabled(false);
-      showResult(result);
-    }, processingDelays[result]);
+    scheduleProcessingResult();
   });
 })();

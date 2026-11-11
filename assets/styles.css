@@ -349,6 +349,9 @@ a { color: inherit; }
 .atht-text-control { display: inline-flex; align-items: center; gap: 6px; color: rgba(85, 91, 95, .64); font-size: .68rem; opacity: .42; transition: opacity .15s ease; }
 .atht-text-control:hover,
 .atht-text-control:focus-within { opacity: .62; }
+.payment-processing .atht-text-control { opacity: .18; }
+.payment-processing .atht-text-control:hover,
+.payment-processing .atht-text-control:focus-within { opacity: .32; }
 .atht-name { margin-right: 2px; letter-spacing: .03em; }
 .atht-radio { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .atht-text-control label { color: rgba(82, 88, 92, .58); cursor: pointer; text-decoration: none; text-underline-offset: 3px; }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Local demonstration checkout. No payment information is transmitted.">
   <title>Payment details</title>
-  <link rel="stylesheet" href="assets/styles.css?v=11">
+  <link rel="stylesheet" href="assets/styles.css?v=12">
 </head>
 <body class="checkout-page">
   <header class="checkout-header">
@@ -70,7 +70,7 @@
             <div class="field">
               <label for="security-code">Security code <span aria-hidden="true">*</span></label>
               <div class="security-code-row">
-                <input id="security-code" name="security-code" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="000" required aria-describedby="security-code-error security-help">
+                <input id="security-code" name="security-code" type="text" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="000" required aria-describedby="security-code-error security-help">
                 <span class="cvv-icon" aria-hidden="true"></span>
                 <span id="security-help">3 or 4 digits</span>
               </div>
@@ -109,6 +109,6 @@
     </div>
   </footer>
 
-  <script src="assets/checkout.js?v=16"></script>
+  <script src="assets/checkout.js?v=18"></script>
 </body>
 </html>
